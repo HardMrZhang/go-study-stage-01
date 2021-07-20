@@ -12,7 +12,6 @@ const NAME = "yyasyfa"
 //变量声明
 func Test_01(t *testing.T) {
 	a := 1
-
 	fmt.Println(&a)
 	a, b := 20, "aa"
 	fmt.Println(&a, a)
