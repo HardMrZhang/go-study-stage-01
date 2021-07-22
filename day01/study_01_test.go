@@ -95,3 +95,9 @@ func Test_06(t *testing.T) {
 func Test(t *testing.T) {
 	fmt.Println(cmplx.Exp(1i*math.Pi) + 1)
 }
+
+func Test001(t *testing.T) {
+	var a float32
+	//a = 0.1111111111111111
+	fmt.Println(a)
+}

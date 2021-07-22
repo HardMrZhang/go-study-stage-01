@@ -212,5 +212,4 @@ func Test_Common_String(t *testing.T) {
 	fmt.Println(s8)
 	fmt.Println(s7[2:7])
 	fmt.Println(s7[5:])
-
 }

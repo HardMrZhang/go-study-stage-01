@@ -2,7 +2,6 @@ package day02
 
 import (
 	"fmt"
-
 	"testing"
 )
 
@@ -15,8 +14,8 @@ func TestSlice(t *testing.T) {
 	fmt.Printf("b 的地址: %p ,长度 :%d %#v\n", b, len(b), b)
 	for i := 0; i < 2; i++ {
 		b = append(b, 30)
-		//fmt.Printf("a1 的地址: %p ,长度 :%d %#v\n", a, len(a), a)
-		//fmt.Printf("b 的地址: %p ,长度 :%d %#v\n", b, len(b), b)
+		fmt.Printf("a1 的地址: %p ,长度 :%d %#v\n", a, len(a), a)
+		fmt.Printf("b 的地址: %p ,长度 :%d %#v\n", b, len(b), b)
 	}
 }
 func Test_Slice_01(t *testing.T) {
@@ -117,4 +116,29 @@ func Test_Slice_05(t *testing.T) {
 	fmt.Println(s4)
 	fmt.Println(s5)
 
+}
+
+//多维切片
+func Test_Slice_06(t *testing.T) {
+	//声明一个二维数组切片并且赋值
+	slice := [][]int{{10}, {100, 200}}
+	//对第一个切片追加职位20的元素
+	slice[0] = append(slice[0], 20)
+	fmt.Println(slice)
+
+}
+
+func Test_Slice_07(t *testing.T) {
+	arrayA := []int{100, 200}
+	testArrayPoint(&arrayA) // 1.传数组指针
+
+	arrayB := arrayA[:]
+	testArrayPoint(&arrayB) // 2.传切片
+	fmt.Printf("arrayA : %p , %v\n", &arrayA, arrayA)
+
+}
+
+func testArrayPoint(x *[]int) {
+	fmt.Printf("func Array : %p , %v\n", x, *x)
+	(*x)[1] += 100
 }
