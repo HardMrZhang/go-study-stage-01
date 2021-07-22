@@ -26,7 +26,7 @@ func Test_Map_01(t *testing.T) {
 	//不能使用new声明
 	//m4 := new(map[string]float64)
 	//m4["one"] = 1.11
-	//fmt.Println(m4)
+	//fmt.Println("m4:", m4)
 
 	//可以用切片作为map的值
 	mp1 := make(map[string][]int)
@@ -119,4 +119,18 @@ func Test_Map_05(t *testing.T) {
 		return true
 	})
 	fmt.Println(sync_map.Load("a"))
+}
+
+func Test_Map_06(t *testing.T) {
+
+	//var m1 map[string]int
+	var m2 sync.Map
+	m2.Store("a", 1)
+	m2.Delete("a")
+	fmt.Println(m2.Load("a"))
+	m2.Range(func(key, value interface{}) bool {
+		fmt.Println(key, value)
+		return true
+	})
+
 }

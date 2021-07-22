@@ -122,8 +122,10 @@ func Test_Slice_05(t *testing.T) {
 func Test_Slice_06(t *testing.T) {
 	//声明一个二维数组切片并且赋值
 	slice := [][]int{{10}, {100, 200}}
+	fmt.Println(slice[0])
 	//对第一个切片追加职位20的元素
 	slice[0] = append(slice[0], 20)
+	slice[1][0] = 10
 	fmt.Println(slice)
 
 }
