@@ -53,6 +53,7 @@ func Test_func_001(t *testing.T) {
 }
 
 func visit(l []int, f func(int)) { //使用visist将整个遍历过程进行封装,想要获取遍历期间的切片值,只需要向visit函数传入一个回调参数
+
 	for _, v := range l {
 		f(v)
 	}
@@ -181,7 +182,11 @@ func Test_func_06(t *testing.T) {
 	f := func() {
 		str = "cz" //在匿名函数中并没有定义str,str定义是在匿名函数声明之前,此时str就被引用到匿名函数中形成闭包
 	}
+	f2 := func() {
+		str = "zzy"
+	}
 	f()
+	f2()
 	fmt.Println(str)
 }
 func Test_func_07(t *testing.T) {
@@ -299,7 +304,7 @@ func Test_func_12(t *testing.T) {
 	e3()
 }
 func e1() {
-	var err error
+	var err error //nil
 	defer fmt.Println(err)
 	err = errors.New("e1 defer err")
 }
