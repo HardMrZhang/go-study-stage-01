@@ -129,11 +129,11 @@ func Test_struct_04(t *testing.T) {
 	outer.a = 5
 	outer.b = 10
 	fmt.Printf("outer.b is: %d\n", outer.b)
-	fmt.Printf("outer.c is: %f\n", outer.c)
+	fmt.Printf("outer.c is: %f\n", outer.d)
 	fmt.Printf("outer.int is: %d\n", outer.int)
 	fmt.Printf("outer.in1 is: %d\n", outer.a)
 	fmt.Printf("outer.in2 is: %d\n", outer.b)
 	// 使用结构体字面量
 	outer2 := outers{6, 7.5, 60, inners{5, 10}}
-	fmt.Printf("outer2 is:", outer2)
+	fmt.Println("outer2 is:", outer2)
 }
