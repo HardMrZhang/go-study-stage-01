@@ -21,7 +21,6 @@ import (
 */
 
 //为结构体添加方法
-
 type Bag struct {
 	item []int
 }
@@ -95,7 +94,6 @@ func Test_struct_sec_04(t *testing.T) {
 	}
 	r := c1.add(c2)
 	fmt.Println(r)
-
 }
 
 /**
@@ -106,8 +104,20 @@ Go语言可以将类型的方法与普通函数视为一个概念，从而简化
 无论是普通函数还是结构体的方法，只要它们的签名一致，与它们签名一致的函数变量就可以保存普通函数或是结构体方法。
 */
 
-type class struct {
+type Person struct {
+	eye string
 }
+
+//person类
+func (p *Person) sleep(w string) {}
+
+func Test_struct_sec_0100(t *testing.T) {
+	p := new(Person)
+	p.sleep("")
+
+}
+
+type class struct{}
 
 func (c *class) Do(v int) {
 	fmt.Println("call method do:", v)

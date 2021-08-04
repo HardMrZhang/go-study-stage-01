@@ -2,6 +2,7 @@ package day07
 
 import (
 	"fmt"
+	"math"
 	"testing"
 )
 
@@ -107,5 +108,66 @@ func Test_Interface_03(t *testing.T) {
 接口的nil判断
 */
 
-type Stringer interface {
+type MyImplement struct {
+}
+
+//实现fmt.Stringer的string方法
+func (m *MyImplement) String() string {
+	return "hi"
+}
+
+//在函数中返回fmt.Stringer接口
+func GetStringer() fmt.Stringer {
+	var s *MyImplement = nil
+	if s == nil {
+		return nil
+	}
+	return s
+}
+
+func Test_Interface_04(t *testing.T) {
+	//判断返回值是否为nil
+	fmt.Println(GetStringer())
+	if GetStringer() == nil {
+		fmt.Println("GetStringer() == nil")
+	} else {
+		fmt.Println("GetStringer() != nil")
+	}
+}
+
+func Test_Interface_05(t *testing.T) {
+	var x interface{}
+	x = "aaa"
+	//注意如果不接收第二个参数也就是上面代码中的ok，
+	//断言失败时会直接造成一个panic。
+	value, ok := x.(int)
+	fmt.Println(value, ok)
+
+}
+
+/**
+自定义错误类型
+*/
+
+type dualError struct {
+	Num     float64
+	problem string
+}
+
+func (e dualError) Error() string {
+	return fmt.Sprintf("wrong!!,because \"%f\" is a negative number", e.Num)
+}
+func Sqrt(f float64) (float64, error) {
+	if f < 0 {
+		return -1, dualError{Num: f}
+	}
+	return math.Sqrt(f), nil
+}
+func Test_Interface_06(t *testing.T) {
+	result, err := Sqrt(-31)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(result)
+	}
 }

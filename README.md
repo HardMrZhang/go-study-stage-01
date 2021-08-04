@@ -335,13 +335,7 @@
 
      - [ ] 接口
 
-     - [ ] OOP编程
-
      - [ ] 错误处理
-
-     - [ ] 包
-
-     - [ ] 并发性Concurrency
 
      - [ ] 通道Channel
 
@@ -350,10 +344,6 @@
      - [ ] 反射Reflect
 
      - [ ] Common func
-
-       ```
-       	   fmt,输入，输出	       Println()	       Print()	       Printf()	       Scanln()	       Scanf()	       ...	   math,数学，	       Abs()	       Sqrt()	       Pow(a,b)	       Pow10(n)	       ..	   math/rand,	       随机数	       rand.Seed()	       rand.Intn()	   time，时间	       time.Now()	       Unix()	       UnixNano()	   strings包,字符串的常用的方法。。	   包含：	       Contains(s,substr)	       ContainsAny(s,substr)	   前缀和后缀	       HasPrefix()	       HasSuffix()	   搜索：	       Index(s,substr)	       LastIndex(s,substr)	   替换：	       Replace(s,old,new,n),n表示替换的次数，如果全部替换，-1	   统计：	       Count(s,substr)	   大小写转换：	       ToLower()	       ToUpper()	   切割：	       Split()	       SplitN()	   重复：	       Repeat(s,n)	   截取：	       s[start:end]-->截取子串，[start,end)
-       ```
 
        
 
