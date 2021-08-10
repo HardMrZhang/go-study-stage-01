@@ -170,4 +170,5 @@ func Test_Interface_06(t *testing.T) {
 	} else {
 		fmt.Println(result)
 	}
+
 }
