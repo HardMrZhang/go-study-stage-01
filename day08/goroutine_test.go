@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"runtime"
 	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 )
@@ -47,6 +48,7 @@ func Test_goroutine_03(t *testing.T) {
 		fmt.Println("hello")
 	}
 }
+
 func Test_goroutine_04(t *testing.T) {
 	//go func() {
 	//	defer fmt.Println("A defer")
@@ -71,15 +73,15 @@ func Test_goroutine_04(t *testing.T) {
 		}()
 		fmt.Println("A")
 	}()
-
 	for i := 0; i < 2; i++ {
 		fmt.Println("hello")
 	}
+
 }
 
 //runtime.GOMAXPROCS
 func a() {
-	for i := 0; i < 10; i++ {
+	for i := 1; i < 10; i++ {
 		fmt.Println("A", i)
 	}
 }
@@ -90,16 +92,16 @@ func b() {
 }
 func Test_goroutine_05(t *testing.T) {
 	//两个任务只有一个逻辑核心，此时是做完一个任务再做另一个任务
-	runtime.GOMAXPROCS(1)
-	go a()
-	go b()
-	time.Sleep(time.Second)
-
-	//将逻辑核心数设为2，此时两个任务并行执行
-	//runtime.GOMAXPROCS(2)
+	//runtime.GOMAXPROCS(1)
 	//go a()
 	//go b()
 	//time.Sleep(time.Second)
+
+	//将逻辑核心数设为2，此时两个任务并行执行
+	runtime.GOMAXPROCS(2)
+	go a()
+	go b()
+	time.Sleep(time.Second)
 }
 
 func recv(c chan int) {
@@ -114,7 +116,7 @@ func Test_goroutine_06(t *testing.T) {
 }
 
 func Test_goroutine_07(t *testing.T) {
-	ch := make(chan int, 1)
+	ch := make(chan int, 2)
 	ch <- 10
 	fmt.Println("发送成功")
 }
@@ -207,14 +209,13 @@ func Test_goroutine_10(t *testing.T) {
 	resultChan := make(chan *Result, 128)
 
 	createPool(64, jobChan, resultChan)
-
 	go func(resultChan chan *Result) {
 		for result := range resultChan {
 			fmt.Printf("job id:%v randnum:%v result:%d\n", result.job.Id, result.job.RandNum, result.sum)
 		}
 	}(resultChan)
 	var id int
-	for {
+	for i := 0; i < 10; i++ {
 		id++
 		r_num := rand.Int()
 		job := &Job{
@@ -238,25 +239,24 @@ func Test_goroutine_11(t *testing.T) {
 	//fmt.Printf("t2:%v\n", t2)
 
 	//验证timer只响应1次
-	//timer2 := time.NewTimer(time.Second)
-	//for {
-	//	<-timer2.C
-	//	fmt.Println("时间到")
-	//}
+	timer2 := time.NewTimer(time.Second)
+	for {
+		<-timer2.C
+		fmt.Println("时间到")
+	}
 
 	//timer实现延时的功能
 	//A
 	//time.Sleep(time.Second)
 	////B
-	//timer3 := time.NewTimer(2 * time.Second)
-	//<-timer3.C
-	//fmt.Println("2秒到")
+	timer3 := time.NewTimer(2 * time.Second)
+	<-timer3.C
+	fmt.Println("2秒到")
 	////C
 	//<-time.After(3 * time.Second)
 	//fmt.Println("3秒到")
 
 	//停止定时器
-
 	//timer4 := time.NewTimer(2 * time.Second)
 	//go func() {
 	//	<-timer4.C
@@ -268,12 +268,12 @@ func Test_goroutine_11(t *testing.T) {
 	//}
 
 	//重置定时器
-	timer5 := time.NewTimer(3 * time.Second)
-	timer5.Reset(1 * time.Second)
-	fmt.Println(time.Now())
-	fmt.Println(<-timer5.C)
-	for {
-	}
+	//timer5 := time.NewTimer(3 * time.Second)
+	//timer5.Reset(1 * time.Second)
+	//fmt.Println(time.Now())
+	//fmt.Println(<-timer5.C)
+	//for {
+	//}
 
 }
 
@@ -290,6 +290,9 @@ func Test_goroutine_12(t *testing.T) {
 			}
 		}
 	}()
+
+	for {
+	}
 }
 
 /**
@@ -313,6 +316,8 @@ func Test_goroutine_13(t *testing.T) {
 		fmt.Println("s1:", s1)
 	case s2 := <-out2:
 		fmt.Println("s2:", s2)
+	default:
+
 	}
 }
 
@@ -340,11 +345,11 @@ func Test_goroutine_14(t *testing.T) {
 }
 
 /**
-判断管道
+判断管道有没有满
 */
 func Test_goroutine_15(t *testing.T) {
 	// 创建管道
-	out1 := make(chan string, 10)
+	out1 := make(chan string, 2)
 	// 子协程写数据
 	go write(out1)
 	//取数据
@@ -361,6 +366,8 @@ func write(ch chan string) {
 			fmt.Println("writer hello")
 		default:
 			fmt.Println("channel full")
+			//close(ch)
+
 		}
 		time.Sleep(time.Millisecond * 500)
 	}
@@ -373,8 +380,14 @@ func write(ch chan string) {
 var x int64
 var lock sync.Mutex
 
+func add2() {
+	for i := 0; i < 5000; i++ {
+		x = x + 1
+	}
+	wg.Done()
+}
 func add() {
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 5000; i++ {
 		lock.Lock()
 		x = x + 1
 		lock.Unlock()
@@ -403,7 +416,9 @@ var (
 
 func w() {
 	rwlock.Lock() //加写锁
-	x = x + 1
+	fmt.Println("---------", y)
+	y = y + 1
+	fmt.Println("=========", y)
 	time.Sleep(10 * time.Millisecond) // 假设读操作耗时10毫秒
 	rwlock.Unlock()
 	wgg.Done()
@@ -427,5 +442,47 @@ func Test_goroutine_17(t *testing.T) {
 	}
 	wgg.Wait()
 	end := time.Now()
+	fmt.Println(end.Sub(start), y)
+}
+
+/**
+
+ */
+var z int64
+var l sync.Mutex
+var wwgg sync.WaitGroup
+
+// 普通版加函数
+func add1() {
+	// x = x + 1
+	z++ // 等价于上面的操作
+	wwgg.Done()
+}
+
+// 互斥锁版加函数
+func mutexAdd() {
+	l.Lock()
+	z++
+	l.Unlock()
+	wwgg.Done()
+}
+
+// 原子操作版加函数
+func atomicAdd() {
+	atomic.AddInt64(&z, 1)
+	wwgg.Done()
+}
+
+func Test_goroutine_18(t *testing.T) {
+	start := time.Now()
+	for i := 0; i < 10000; i++ {
+		wwgg.Add(1)
+		//go add1() // 普通版add函数 不是并发安全的
+		//go mutexAdd() // 加锁版add函数 是并发安全的，但是加锁性能开销大
+		go atomicAdd() // 原子操作版add函数 是并发安全，性能优于加锁版
+	}
+	wwgg.Wait()
+	end := time.Now()
+	fmt.Println(z)
 	fmt.Println(end.Sub(start))
 }
