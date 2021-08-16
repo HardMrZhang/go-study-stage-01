@@ -79,7 +79,7 @@ func Test_reflect_02(t *testing.T) {
 	//反射使用 TypeOf 和 ValueOf 函数从接口中获取目标对象信息
 	//1.获取对象的类型
 	t1 := reflect.TypeOf(p1)
-	fmt.Println(t1)                   //main.Person
+	fmt.Println(t1)                   //day09.Person
 	fmt.Println("p1的类型是：", t1.Name()) //调用t.Name方法来获取这个类型的名称
 	k1 := t1.Kind()                   //struct
 	fmt.Println(k1)
@@ -100,10 +100,10 @@ func Test_reflect_02(t *testing.T) {
 	//2.操作方法
 	for i := 0; i < t1.NumMethod(); i++ {
 		m := t1.Method(i)
-		fmt.Println(m.Name, m.Type) //Hello func(main.Person)
+		fmt.Println(m.Name, m.Type) //Hello func(day09.Person)
 		/*
-		   {Hello  func(main.Person) <func(main.Person) Value> 0}
-		   {PrintInfo  func(main.Person) <func(main.Person) Value> 1}
+		   {Hello  func(day09.Person) <func(day09.Person) Value> 0}
+		   {PrintInfo  func(day09.Person) <func(day09.Person) Value> 1}
 		*/
 	}
 
