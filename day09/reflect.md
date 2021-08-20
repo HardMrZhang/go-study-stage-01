@@ -50,9 +50,7 @@ Go 语言在 reflect 包里定义了各种类型，实现了反射的各种函�
    	_type  *_type //表示具体类型
    	link   *itab
    	hash   uint32
-   	bad    bool
-   	inhash bool
-   	unused [2]byte
+   	_ [4]byte
    	fun    [1]uintptr
    }
    ```

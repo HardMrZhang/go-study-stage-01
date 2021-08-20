@@ -13,6 +13,7 @@ type iface struct {
 	tab  *itab
 	data unsafe.Pointer
 }
+
 type itab struct {
 	inter uintptr
 	_type uintptr
